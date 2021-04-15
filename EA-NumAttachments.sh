@@ -4,6 +4,16 @@ jamfProURL="https://jamfpro.acme.net:8443"
 jamfProUser="apiuser-logcollection"
 jamfProPass="apiuserpassword"
 
+# use the right xpath for macOS version based on build - reference -> https://scriptingosx.com/2020/10/dealing-with-xpath-changes-in-big-sur/
+xpath() {
+    # the xpath tool changes in Big Sur 
+    if [[ $(sw_vers -buildVersion) > "20A" ]]; then
+        /usr/bin/xpath -e "$@"
+    else
+        /usr/bin/xpath "$@"
+    fi
+}
+
 ## Grab local serial number
 mySerial=$( system_profiler SPHardwareDataType | grep Serial |  awk '{print $NF}' )
 
